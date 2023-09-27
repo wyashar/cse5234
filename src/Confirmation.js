@@ -1,6 +1,6 @@
 import React from "react"
 
-const confirmation = () => {    
+const viewConfirmation = () => {    
     let title = "Confirmation Page"
     return (
         <div>
@@ -11,4 +11,4 @@ const confirmation = () => {
     )
 }
 
-export default confirmation
+export default viewConfirmation
