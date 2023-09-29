@@ -4,9 +4,13 @@ import "./components/purchase.css";
 
 const Purchase = () => {    
     const [order, setOrder] = useState({
-        productName: ["Apple", "Orange", "Banana", "Mango", "Kiwi"],
-        productDescription: ["Apple2", "Orange2", "Banana3", "Mango4", "Kiwi5"],
-        productPrice: [1, 2, 3, 4, 5],
+        productName: ["iPhone 13", "Samsung Galaxy Watch 4", "Sony WH-1000XM4 Headphones", "Instant Pot Duo Evo Plus", "Nintendo Switch"],
+        productDescription: ["The latest iPhone model with a powerful A15 Bionic chip and a stunning Super Retina XDR display",
+        "A feature-packed smartwatch with health and fitness tracking, AMOLED display, and long battery life",
+        "Premium noise-canceling headphones with excellent sound quality and all-day comfort",
+        "A versatile multicooker that can pressure cook, sauté, steam, and more, making meal prep a breeze",
+        "A popular gaming console that offers both portable and TV modes for gaming on the go or at home"],
+        productPrice: [799, 249, 349, 119, 299],
         buyQuantity: [0,0,0,0,0], 
         creditCardNumber: '', 
         expirDate: '', 
