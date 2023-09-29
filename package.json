@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "stop": "pkill --signal SIGINT myApp",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

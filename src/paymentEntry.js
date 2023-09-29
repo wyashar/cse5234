@@ -1,7 +1,7 @@
 import React from "react"
 
 const paymentEntry = () => {
-    let title = "Shipping Entry Page"
+    let title = "Payment Entry Page"
     return (
         <div>
             <h1>
