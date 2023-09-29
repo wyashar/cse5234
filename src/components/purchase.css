@@ -43,3 +43,13 @@
     text-align: left;
     cursor: pointer;
   }
+
+  .product-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .product-info {
+    flex: 1;
+  }
