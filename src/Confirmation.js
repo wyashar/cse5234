@@ -4,19 +4,18 @@ import {useLocation} from "react-router-dom"
 
 const ViewConfirmation = () => {   
     const location = useLocation();
+    const order = location.state.order;
+    const paymentInfo = location.state.paymentInfo;
+    const shippingInfo = location.state.shippingInfo;
+    const productName = order.productName;
     const navigate = useNavigate(); 
     let title = "Confirmation Page";
-
-    // Data placeholders, these will be passed into the page
-    const products = ["milk", "eggs", "bread"];
-    const quantities = [2, 4, 6];
-    const costs = [10, 20, 30];
-
     let totalCost = 0;
 
-    for (let i = 0; i < products.length; i++) {
-        totalCost += quantities[i]*costs[i];
+    for (let i = 0; i < order.productName.length; i++) {
+        totalCost += order.buyQuantity[i]*order.productPrice[i];
     }
+    
 
     return (
         <div>
@@ -26,16 +25,16 @@ const ViewConfirmation = () => {
             <h2>
                 Thank you for placing your order!
             </h2>
-            Confirmation number: 123456789
+            Confirmation number: {Math.floor(Math.random() * 999999999) + 100000000}
             <h2>
                 Order Details:
             </h2>
             <table>
-                {products.map((product, i) => 
+                {productName.map((productName, i) => 
                     <tr>
-                        <th>{"Product: " + product}</th>
-                        <th>{"| Quantity: " + quantities[i]}</th>
-                        <th>{"| Cost: " + quantities[i] + " x $" + costs[i] + " = $" + quantities[i]*costs[i]}</th>
+                        <th>{"Product: " + productName}</th>
+                        <th>{"| Quantity: " + order.buyQuantity[i]}</th>
+                        <th>{"| Cost: " + order.buyQuantity[i] + " x $" + order.productPrice[i] + " = $" + order.buyQuantity[i]*order.productPrice[i]}</th>
                     </tr>)
                 }
                 {"Total order cost: $" + totalCost}

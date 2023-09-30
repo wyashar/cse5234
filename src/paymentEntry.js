@@ -3,8 +3,8 @@ import { useNavigate, useLocation, json } from "react-router-dom"
 
 const PaymentEntry = () => {
     const location = useLocation()
-    const order = location && location.order
-    const shippingInfo = location && location.shippingInfo
+    const order = location.state.order
+    const shippingInfo = location.state.shippingInfo
     const[paymentInfo, setPaymentInfo] = useState({
         cardNumber: "",
         cardExp: "",
