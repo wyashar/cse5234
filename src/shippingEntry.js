@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 
 const ShippingEntry = () => {
-    const order = useLocation()
+    const order = useLocation().state.order
     const [shippingInfo, setShippingInfo] = useState({
         name: "",
         address1: "",

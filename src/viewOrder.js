@@ -4,29 +4,24 @@ import {useLocation} from "react-router-dom"
 
 const ViewOrder = () => {    
     const location = useLocation();
+    const order = location.state.order;
+    const paymentInfo = location.state.paymentInfo;
+    const shippingInfo = location.state.shippingInfo;
+    const productName = order.productName;
     const navigate = useNavigate();
     let title = "View Order Page";
-
-    // Data placeholders, these will be passed into the page
-    const products = ["milk", "eggs", "bread"];
-    const quantities = [2, 4, 6];
-    const costs = [10, 20, 30];
-    const cardNumber = "1234567812345678";
-    const expirationDate = "01/23";
-    const ccv = "999";
-    const holderName = "John Doe";
-    const shippingName = "John Doe";
-    const address1 = "123 Blue Rd";
-    const address2 = "";
-    const city = "Columbus";
-    const state = "Ohio";
-    const zip = "43201";
-
-
     let totalCost = 0;
 
-    for (let i = 0; i < products.length; i++) {
-        totalCost += quantities[i]*costs[i];
+    for (let i = order.productName.length - 1; i >= 0; i--) {
+        if(order.buyQuantity[i] < 1) {
+            order.productName.splice(i, 1)
+            order.buyQuantity.splice(i, 1)
+            order.productPrice.splice(i, 1)
+        }
+    }
+
+    for (let i = 0; i < order.productName.length; i++) {
+        totalCost += order.buyQuantity[i]*order.productPrice[i];
     }
 
     return (
@@ -38,11 +33,11 @@ const ViewOrder = () => {
                 Order Info:
             </h2>
             <table>
-                {products.map((product, i) => 
+                {productName.map((productName, i) => 
                     <tr>
-                        <th>{"Product: " + product}</th>
-                        <th>{"| Quantity: " + quantities[i]}</th>
-                        <th>{"| Cost: " + quantities[i] + " x $" + costs[i] + " = $" + quantities[i]*costs[i]}</th>
+                        <th>{"Product: " + productName}</th>
+                        <th>{"| Quantity: " + order.buyQuantity[i]}</th>
+                        <th>{"| Cost: " + order.buyQuantity[i] + " x $" + order.productPrice[i] + " = $" + order.buyQuantity[i]*order.productPrice[i]}</th>
                     </tr>)
                 }
                 {"Total order cost: $" + totalCost}
@@ -52,16 +47,16 @@ const ViewOrder = () => {
             </h2>
             <table>
                 <tr>
-                    <th>Credit card number |</th> <th>{cardNumber}</th>
+                    <th>Credit card number |</th> <th>{paymentInfo.cardNumber}</th>
                 </tr>
                 <tr>
-                    <th>Expiration date |</th> <th>{expirationDate}</th>
+                    <th>Expiration date |</th> <th>{paymentInfo.cardExp}</th>
                 </tr>
                 <tr>
-                    <th>CCV code |</th> <th>{ccv}</th>
+                    <th>CCV code |</th> <th>{paymentInfo.cardCVV}</th>
                 </tr>
                 <tr>
-                    <th>Card holder name |</th> <th>{holderName}</th>
+                    <th>Card holder name |</th> <th>{paymentInfo.cardHolderName}</th>
                 </tr>
             </table>
             <h2>
@@ -69,25 +64,33 @@ const ViewOrder = () => {
             </h2>
             <table>
                 <tr>
-                    <th>Shipping name |</th> <th>{shippingName}</th>
+                    <th>Shipping name |</th> <th>{shippingInfo.name}</th>
                 </tr>
                 <tr>
-                    <th>Address 1 |</th> <th>{address1}</th>
+                    <th>Address 1 |</th> <th>{shippingInfo.address1}</th>
                 </tr>
                 <tr>
-                    <th>Address 2 |</th> <th>{address2}</th>
+                    <th>Address 2 |</th> <th>{shippingInfo.address2}</th>
                 </tr>
                 <tr>
-                    <th>City |</th> <th>{city}</th>
+                    <th>City |</th> <th>{shippingInfo.city}</th>
                 </tr>
                 <tr>
-                    <th>State |</th> <th>{state}</th>
+                    <th>State |</th> <th>{shippingInfo.state}</th>
                 </tr>
                 <tr>
-                    <th>Zip |</th> <th>{zip}</th>
+                    <th>Zip |</th> <th>{shippingInfo.zip}</th>
                 </tr>
             </table>
-            <button onClick={() => navigate('/purchase/viewConfirmation')}>Place Order</button>
+            <button onClick={() => navigate('/purchase/viewConfirmation',
+            {
+                replace: true,
+                state: {
+                    shippingInfo: shippingInfo,
+                    order: order,
+                    paymentInfo: paymentInfo
+                }
+            })}>Place Order</button>
         </div>
     )
 }
