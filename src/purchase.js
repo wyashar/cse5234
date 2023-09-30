@@ -12,15 +12,6 @@ const Purchase = () => {
         "A popular gaming console that offers both portable and TV modes for gaming on the go or at home"],
         productPrice: [799, 249, 349, 119, 299],
         buyQuantity: [0,0,0,0,0],
-        creditCardNumber: '',
-        expirDate: '',
-        cvvCode: '',
-        cardHolderName: '',
-        addressOne: '',
-        adressTwo: '',
-        city: '',
-        state: '',
-        zip:'',
     });
 
     const navigate = useNavigate();

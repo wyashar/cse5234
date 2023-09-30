@@ -42,17 +42,16 @@ const ShippingEntry = () => {
                     <input
                         type="text"
                         required
-                        value={shippingInfo.adress1}
+                        value={shippingInfo.address1}
                         onChange={(e) => {
                             const updatedShippingInfo = { ...shippingInfo}
-                            updatedShippingInfo.adress1 = e.target.value;
+                            updatedShippingInfo.address1 = e.target.value;
                             setShippingInfo(updatedShippingInfo)
                         }}
                     ></input>
                     <label>Adress Line 2:</label>
                     <input
                         type="text"
-                        required
                         value={shippingInfo.address2}
                         onChange={(e) => {
                             const updatedShippingInfo = { ...shippingInfo}
@@ -95,7 +94,7 @@ const ShippingEntry = () => {
                     ></input>
                     </div>
                 </div>
-                <button className='button'>Submit</button>
+                <button type='submit' className='button'>Submit</button>
             </form>
         </div>
     )
