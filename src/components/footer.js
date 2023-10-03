@@ -1,23 +1,20 @@
 import React from 'react';
+import {Link} from "react-router-dom"
 
 const Footer = () => (
   <footer className="bg-dark text-light py-4">
     <div className="container">
       <div className="row">
-        <div className="col-md-4">
+        <div className="col-md-6">
           <h4>About Us</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
-        <div className="col-md-4">
-          <h4>Contact Us</h4>
-          <p>Email: info@example.com</p>
-          <p>Phone: +123-456-7890</p>
-        </div>
-        <div className="col-md-4">
-          <h4>Who Are We?</h4>
-          <a href="#">Facebook</a><br />
-          <a href="#">Twitter</a><br />
-          <a href="#">Instagram</a>
+        <div className="col-md-6">
+          <h4>
+            <Link to="/contactus" replace>Contact Us</Link>
+          </h4>
+          <p>Email: CSE5234.999@osu.edu</p>
+          <p>Phone: +1 (614)-602-7924</p>
         </div>
       </div>
     </div>
