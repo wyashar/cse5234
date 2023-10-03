@@ -1,72 +1,27 @@
+import React from 'react';
+import {Link} from "react-router-dom"
 
-import Footer from 'rc-footer';
-import 'rc-footer/assets/index.css'; // import 'rc-footer/asssets/index.less';
-import './footer.css'
-
-const SampleFooter = () => (
-
-  <Footer  className='footer'
-  autoFocus
-  columns={[
-    {
-      title: 'contact us',
-      items: [
-        {
-          title: 'adress',
-          url: 'https://ceo/',
-          openExternal: true,
-        },
-        {
-          title: 'email',
-          url: 'https://ceo/',
-          openExternal: true,
-        },
-        {
-          title: 'phone',
-          url: 'https://ceo/',
-          openExternal: true,
-        },
-      ],
-    },
-    {
-      icon: (
-        <img
-          src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
-          alt="more products"
-        />
-      ),
-      title: 'more info',
-      items: [
-        {
-          icon: (
-            <img
-              src="https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg"
-              alt="yuque"
-            />
-          ),
-          title: 'cse5234',
-          url: 'https://com',
-          description: 'cse5234',
-          openExternal: true,
-        },
-        {
-          icon: (
-            <img
-              src="https://gw.alipayobjects.com/zos/rmsportal/uHocHZfNWZOdsRUonZNr.png"
-              alt="yuque"
-            />
-          ),
-          title: 'cse5234',
-          url: 'https://com',
-          description: 'cse5234',
-          openExternal: true,
-        },
-      ],
-    },
-  ]}
-/>
-
+const Footer = () => (
+  <footer className="bg-dark text-light py-4">
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6">
+          <h4>About Us</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div className="col-md-6">
+          <h4>
+            <Link to="/contactus" replace>Contact Us</Link>
+          </h4>
+          <p>Email: CSE5234.999@osu.edu</p>
+          <p>Phone: +1 (614)-602-7924</p>
+        </div>
+      </div>
+    </div>
+    <div className="text-center mt-3">
+      &copy; {new Date().getFullYear()} CSE5234 LLC. All rights reserved.
+    </div>
+  </footer>
 );
 
-
-export default () => <SampleFooter />;
+export default Footer;
