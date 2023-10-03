@@ -1,4 +1,5 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import React from "react";
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
@@ -8,7 +9,7 @@ import ShippingEntry from './shippingEntry';
 import ViewOrder from './viewOrder';
 import ViewConfirmation from './Confirmation';
 
-import SampleFooter from "./components/footer";
+import Footer from "./components/footer";
 import Home from './components/home';
 import About from './components/about';
 import Cart from './components/cart';
@@ -35,7 +36,7 @@ function App() {
       <Route path='/purchase/viewConfirmation' element={<ViewConfirmation/>} />
       </Routes>
       </div>
-      <SampleFooter />
+      <Footer />
     </Router>
     </div>
 
