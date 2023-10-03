@@ -8,17 +8,14 @@ import PaymentEntry from './paymentEntry';
 import ShippingEntry from './shippingEntry';
 import ViewOrder from './viewOrder';
 import ViewConfirmation from './Confirmation';
-import ContactUs from "./contactus"
+import ContactUs from "./contactUs"
 
 import Footer from "./components/footer";
 import Home from './components/home';
 import About from './components/about';
 import Cart from './components/cart';
 
-
 function App() {
-
-
   return (
     <div className="App">
     <Router>
@@ -28,7 +25,6 @@ function App() {
       <Route path='/home' element={<Home/>} />
       <Route path='/about' element={<About/>} />
       <Route path='/cart' element={<Cart/>} />
-
       <Route path='/purchase' element={<Purchase/>} />
       <Route path="/" element={<Navigate replace to="/purchase" />} />
       <Route path='/purchase/paymentEntry' element={<PaymentEntry/>} />
@@ -41,10 +37,7 @@ function App() {
       <Footer />
     </Router>
     </div>
-
-
-  );
-
+  )
 }
 
 export default App;

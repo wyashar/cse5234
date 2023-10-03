@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import "./components/purchase.css";
 
 const Purchase = () => {
     const [order, setOrder] = useState({
@@ -22,31 +21,37 @@ const Purchase = () => {
             )
     }
 
-    let title = "Purchase Page"
+    let title = "Purchase Items"
     return (
-        <div>
-            <h1>{title}</h1>
+        <div className="container">
+            <h4>{title}</h4>
             <form onSubmit={handleSubmit}>
-                {order.productName.map((productName, index) => (
-                    <div key={index} className="product-container">
-                        <div className="product-info">
-                            <label>{productName}</label>
-                            <p>Description: {order.productDescription[index]}</p>
-                            <p>Price: ${order.productPrice[index]}</p>
-                            <input
-                            type="number"
-                            required
-                            onChange={(e) => {
-                                const updatedOrder = { ...order };
-                                updatedOrder.buyQuantity[index] = e.target.value;
-                                setOrder(updatedOrder);
-                            }}
-                        />
-                        <br />
-                        </div>
+            {order.productName.map((productName, index) => (
+                <div key={index} className="row mb-3">
+                  <div className="col-md-6">
+                    <label>{productName}</label>
+                    <p>{order.productDescription[index]}</p>
+                    <p>${order.productPrice[index]}</p>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor={`quantity-${index}`}>Quantity:</label>
+                      <input
+                        type="number"
+                        id={`quantity-${index}`}
+                        className="form-control"
+                        required
+                        onChange={(e) => {
+                            const updatedOrder = { ...order }
+                            updatedOrder.buyQuantity[index] = e.target.value
+                            setOrder(updatedOrder)
+                        }}
+                      />
                     </div>
-                ))}
-                <button type='submit' className='button'>Pay</button>
+                  </div>
+                </div>
+              ))}
+              <button type="submit" className="btn btn-outline-primary">Submit</button>
             </form>
         </div>
     )

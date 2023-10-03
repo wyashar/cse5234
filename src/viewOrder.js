@@ -2,7 +2,7 @@ import React from "react"
 import {useNavigate} from "react-router-dom"
 import {useLocation} from "react-router-dom"
 
-const ViewOrder = () => {    
+const ViewOrder = () => {
     const location = useLocation();
     const order = location.state.order;
     const paymentInfo = location.state.paymentInfo;
@@ -25,74 +25,102 @@ const ViewOrder = () => {
     }
 
     return (
-        <div>
-            <h1>
-                {title}
-            </h1>
-            <h2>
-                Order Info:
-            </h2>
-            <table>
-                {productName.map((productName, i) => 
-                    <tr>
-                        <th>{"Product: " + productName}</th>
-                        <th>{"| Quantity: " + order.buyQuantity[i]}</th>
-                        <th>{"| Cost: " + order.buyQuantity[i] + " x $" + order.productPrice[i] + " = $" + order.buyQuantity[i]*order.productPrice[i]}</th>
-                    </tr>)
-                }
-                {"Total order cost: $" + totalCost}
-            </table>
-            <h2>
-                Payment Info:
-            </h2>
-            <table>
-                <tr>
-                    <th>Credit card number |</th> <th>{paymentInfo.cardNumber}</th>
+        <div className="container">
+          <h1>{title}</h1>
+          <h2>Order Info:</h2>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {productName.map((productName, i) => (
+                <tr key={i}>
+                  <td>{productName}</td>
+                  <td>{order.buyQuantity[i]}</td>
+                  <td>${(order.buyQuantity[i] * order.productPrice[i]).toFixed(2)}</td>
                 </tr>
-                <tr>
-                    <th>Expiration date |</th> <th>{paymentInfo.cardExp}</th>
-                </tr>
-                <tr>
-                    <th>CCV code |</th> <th>{paymentInfo.cardCVV}</th>
-                </tr>
-                <tr>
-                    <th>Card holder name |</th> <th>{paymentInfo.cardHolderName}</th>
-                </tr>
-            </table>
-            <h2>
-                Shipping Info:
-            </h2>
-            <table>
-                <tr>
-                    <th>Shipping name |</th> <th>{shippingInfo.name}</th>
-                </tr>
-                <tr>
-                    <th>Address 1 |</th> <th>{shippingInfo.address1}</th>
-                </tr>
-                <tr>
-                    <th>Address 2 |</th> <th>{shippingInfo.address2}</th>
-                </tr>
-                <tr>
-                    <th>City |</th> <th>{shippingInfo.city}</th>
-                </tr>
-                <tr>
-                    <th>State |</th> <th>{shippingInfo.state}</th>
-                </tr>
-                <tr>
-                    <th>Zip |</th> <th>{shippingInfo.zip}</th>
-                </tr>
-            </table>
-            <button onClick={() => navigate('/purchase/viewConfirmation',
-            {
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan="3">Total order cost: ${totalCost.toFixed(2)}</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <h2>Payment Info:</h2>
+          <table className="table">
+            <tbody>
+              <tr>
+                <th>Credit card number:</th>
+                <td>{paymentInfo.cardNumber}</td>
+              </tr>
+              <tr>
+                <th>Expiration date:</th>
+                <td>{paymentInfo.cardExp}</td>
+              </tr>
+              <tr>
+                <th>CCV code:</th>
+                <td>{paymentInfo.cardCVV}</td>
+              </tr>
+              <tr>
+                <th>Card holder name:</th>
+                <td>{paymentInfo.cardHolderName}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Shipping Info:</h2>
+          <table className="table">
+            <tbody>
+              <tr>
+                <th>Shipping name:</th>
+                <td>{shippingInfo.name}</td>
+              </tr>
+              <tr>
+                <th>Address 1:</th>
+                <td>{shippingInfo.address1}</td>
+              </tr>
+              <tr>
+                <th>Address 2:</th>
+                <td>{shippingInfo.address2}</td>
+              </tr>
+              <tr>
+                <th>City:</th>
+                <td>{shippingInfo.city}</td>
+              </tr>
+              <tr>
+                <th>State:</th>
+                <td>{shippingInfo.state}</td>
+              </tr>
+              <tr>
+                <th>Zip:</th>
+                <td>{shippingInfo.zip}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button
+            onClick={() =>
+              navigate('/purchase/viewConfirmation', {
                 replace: true,
                 state: {
-                    shippingInfo: shippingInfo,
-                    order: order,
-                    paymentInfo: paymentInfo
-                }
-            })}>Place Order</button>
+                  shippingInfo: shippingInfo,
+                  order: order,
+                  paymentInfo: paymentInfo,
+                },
+              })
+            }
+            className="btn btn-primary"
+          >
+            Place Order
+          </button>
         </div>
-    )
+      )
 }
 
 export default ViewOrder
