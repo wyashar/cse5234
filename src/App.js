@@ -1,4 +1,3 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import React from "react";
 import Navbar from './components/Navbar';
@@ -20,7 +19,7 @@ function App() {
     <div className="App">
     <Router>
     <Navbar />
-      <div className="content">
+      <div className="content bg-light">
       <Routes>
       <Route path='/home' element={<Home/>} />
       <Route path='/about' element={<About/>} />
