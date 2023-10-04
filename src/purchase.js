@@ -1,6 +1,11 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
+import product1 from "./Images/iphone13.jfif";
+import product2 from "./Images/galaxywatch4.jfif";
+import product3 from "./Images/sonyheadphones.jfif";
+import product4 from "./Images/instantpot.jfif";
+import product5 from "./Images/nintendoswitch.jfif";
 
 const Purchase = () => {
     const [order, setOrder] = useState({
@@ -22,6 +27,7 @@ const Purchase = () => {
             )
     }
 
+    const productImages = [product1, product2, product3, product4, product5];
     let title = "Purchase Items"
     return (
         <div className="container">
@@ -29,12 +35,22 @@ const Purchase = () => {
             <form onSubmit={handleSubmit}>
             {order.productName.map((productName, index) => (
                 <div key={index} className="row mb-3">
-                  <div className="col-md-6">
+                  <div className="col-md-2 d-flex align-items-center justify-content-center">
+                            <img
+                                src={productImages[index]}
+                                style={{
+                                    height: '100px',
+                                    borderRadius: '10px',
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+                                }}
+                            ></img>
+                    </div>
+                  <div className="col-md-5">
                     <label>{productName}</label>
                     <p>{order.productDescription[index]}</p>
                     <p>${order.productPrice[index]}</p>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-5">
                     <div className="form-group">
                       <label htmlFor={`quantity-${index}`}>Quantity:</label>
                       <input
