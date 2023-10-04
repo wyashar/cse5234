@@ -8,7 +8,7 @@ function NavBar() {
   const handleClick = () => setClick(!click);
   return (
     <>
-      <nav className="navbar">
+      <nav className="bg-dark text-light py-4">
         <div className="nav-container">
           <NavLink exact to="/" className="nav-logo">
             CSE5234

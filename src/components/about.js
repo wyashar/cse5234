@@ -11,12 +11,6 @@ const About = () => {
   };
 
   return (
-    <div>
-      <style>{`
-        body {
-          background-color: #f8f9fa; /* Gray background color */
-        }
-      `}</style>
       <div className="container">
         <h1 style = {headingStyle}>About Us</h1>
         <div className="row">
@@ -37,7 +31,6 @@ const About = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
   
