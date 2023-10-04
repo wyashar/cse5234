@@ -5,11 +5,11 @@ const Footer = () => (
   <footer className="bg-dark text-light py-4">
     <div className="container">
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-2">
           <h4>About Us</h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-3">
           <h4>
             <Link to="/contactus" replace>Contact Us</Link>
           </h4>

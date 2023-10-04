@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import Form from 'react-bootstrap/Form';
 
 const Purchase = () => {
     const [order, setOrder] = useState({
