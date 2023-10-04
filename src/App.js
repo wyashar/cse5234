@@ -9,6 +9,7 @@ import ViewOrder from './viewOrder';
 import ViewConfirmation from './Confirmation';
 import ContactUs from "./contactUs"
 
+
 import Footer from "./components/footer";
 import Home from './components/home';
 import About from './components/about';
@@ -31,6 +32,7 @@ function App() {
       <Route path='/purchase/viewOrder' element={<ViewOrder/>} />
       <Route path='/purchase/viewConfirmation' element={<ViewConfirmation/>} />
       <Route path='/contactus' element={<ContactUs/>} />
+      <Route path='/about' element={<About/>} />
       </Routes>
       </div>
       <Footer />

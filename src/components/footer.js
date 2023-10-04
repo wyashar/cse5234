@@ -6,7 +6,9 @@ const Footer = () => (
     <div className="container">
       <div className="row">
         <div className="col-md-2">
-          <h4>About Us</h4>
+          <h4>
+            <Link to="/about" replace>About Us</Link>
+          </h4>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
         <div className="col-md-3">
