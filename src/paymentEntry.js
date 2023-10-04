@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import { useNavigate, useLocation, json } from "react-router-dom"
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 const PaymentEntry = () => {
     const location = useLocation()
@@ -29,79 +31,74 @@ const PaymentEntry = () => {
 
     let title = "Payment Entry Page"
     return (
-        <div className="container">
-          <h1>{title}</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label htmlFor="cardHolderName">Name on Card:</label>
-                  <input
-                    type="text"
-                    id="cardHolderName"
-                    className="form-control"
-                    required
-                    value={paymentInfo.cardHolderName}
-                    onChange={(e) => {
-                      const updatedPaymentInfo = { ...paymentInfo };
-                      updatedPaymentInfo.cardHolderName = e.target.value;
-                      setPaymentInfo(updatedPaymentInfo);
-                    }}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="cardNumber">Card Number:</label>
-                  <input
-                    type="text"
-                    id="cardNumber"
-                    className="form-control"
-                    required
-                    value={paymentInfo.cardNumber}
-                    onChange={(e) => {
-                      const updatedPaymentInfo = { ...paymentInfo };
-                      updatedPaymentInfo.cardNumber = e.target.value;
-                      setPaymentInfo(updatedPaymentInfo);
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label htmlFor="cardExp">Card Expiration Date:</label>
-                  <input
-                    type="text"
-                    id="cardExp"
-                    className="form-control"
-                    required
-                    value={paymentInfo.cardExp}
-                    onChange={(e) => {
-                      const updatedPaymentInfo = { ...paymentInfo };
-                      updatedPaymentInfo.cardExp = e.target.value;
-                      setPaymentInfo(updatedPaymentInfo);
-                    }}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="cardCVV">Card Verification Number:</label>
-                  <input
-                    type="text"
-                    id="cardCVV"
-                    className="form-control"
-                    required
-                    value={paymentInfo.cardCVV}
-                    onChange={(e) => {
-                      const updatedPaymentInfo = { ...paymentInfo };
-                      updatedPaymentInfo.cardCVV = e.target.value;
-                      setPaymentInfo(updatedPaymentInfo);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <button type='submit' className='btn btn-outline-primary'>Submit</button>
-          </form>
-        </div>
-      )
+      <div style={{width: "600px"}} className="d-flex justify-content-center">
+        <Form onSubmit={handleSubmit}>
+          { /* First Field */}
+          <Form.Group className="mb-3" controlId="formCardNumber">
+          <Form.Label>Card Number</Form.Label>
+          <Form.Control
+            placeholder="999-999-9999"
+            required
+            type="text"
+            value={paymentInfo.name}
+            onChange={(e) => {
+              const updatedPaymentInfo = { ... paymentInfo }
+              updatedPaymentInfo.name = e.target.value
+              setPaymentInfo(updatedPaymentInfo)
+          }}
+          />
+          </Form.Group>
+          { /* Second Field */}
+          <Form.Group className="mb-3" controlId="formCardExp">
+          <Form.Label>Card Expiration</Form.Label>
+          <Form.Control
+            placeholder="09/99"
+            required
+            type="text"
+            value={paymentInfo.cardExp}
+            onChange={(e) => {
+              const updatedPaymentInfo = { ... paymentInfo }
+              updatedPaymentInfo.cardExp = e.target.value
+              setPaymentInfo(updatedPaymentInfo)
+          }}
+          />
+          </Form.Group>
+          { /* Third Field */ }
+          <Form.Group className="mb-3" controlId="formCardCvv">
+          <Form.Label>Card CVV</Form.Label>
+          <Form.Control
+            placeholder="999"
+            required
+            type="text"
+            value={paymentInfo.cardCVV}
+            onChange={(e) => {
+              const updatedPaymentInfo = { ... paymentInfo }
+              updatedPaymentInfo.cardCVV = e.target.value
+              setPaymentInfo(updatedPaymentInfo)
+          }}
+          />
+          </Form.Group>
+          { /* Fourth Field */ }
+          <Form.Group className="mb-3" controlId="formCardHolderName">
+          <Form.Label>Card Holder Name</Form.Label>
+          <Form.Control
+            placeholder="Mark Emerson"
+            required
+            type="text"
+            value={paymentInfo.cardHolderName}
+            onChange={(e) => {
+              const updatedPaymentInfo = { ... paymentInfo }
+              updatedPaymentInfo.cardHolderName = e.target.value
+              setPaymentInfo(updatedPaymentInfo)
+          }}
+          />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </div>
+    )
 }
 
 export default PaymentEntry
