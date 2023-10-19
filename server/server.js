@@ -72,6 +72,9 @@ const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200
 }
+
+app.use(cors(corsOptions))
+
 app.use(express.json())
 app.listen(port, () => {
     console.log('RUNNING ON http://localhost:7000')
@@ -97,4 +100,3 @@ app.post("/update_quantity", function(req, res){
     });
     return res.send('UPDATE PRODUCT QUANTITIES')
 });
-
