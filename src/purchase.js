@@ -11,22 +11,38 @@ import axios from "axios";
 const Purchase = () => {
   const [order, setOrder] = useState({
     productName: [],
+    buyQuantity: [],
     productDescription: [],
     productPrice: [],
-    buyQuantity: [],
   });
 
-    useEffect(() =>{
-      axios.get("http://localhost:7000/get_product", {
-        params: {}
-      }).then((data) =>{
-          const data_ = JSON.parse(JSON.stringify(data.data))
-          data_.forEach(order_ => {
-            order.buyQuantity[order_.Id-1] = order_.quantity
-          })
-          setOrder({...order})
+  useEffect(() => {
+    axios.get("http://localhost:7000/get_product")
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          //I don't think we need this but it allows up to not change the return. If we delete this the useState will have no change, but I couldn't get it to work w/o this
+          const productName = response.data.map(product => product.name);
+          const productDescription = response.data.map(product => product.description);
+          const productPrice = response.data.map(product => product.price);
+
+          // Im not sure how we need to do the quantity stuff with the /update_quantity so keeping at 0 for now
+          const buyQuantity = new Array(response.data.length).fill(0);
+
+          //This is populating
+          setOrder({
+            productName,
+            buyQuantity,
+            productDescription,
+            productPrice,
+          });
+        } else {
+          console.error("Invalid response data:", response.data); //If the arrays don't match
+        }
       })
-    }, [])
+      .catch((error) => {
+        console.error("Error fetching product data:", error); //Other data issue
+      });
+  }, []);
 
     const navigate = useNavigate();
     const handleSubmit = () => {
