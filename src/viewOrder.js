@@ -26,11 +26,13 @@ const ViewOrder = () => {
     }
 
     const updateDatabaseQuantities = () => {
+      const data = {
+        productName: order.productName,
+        buyQuantity: order.buyQuantity,
+      };
+
       axios
-        .post("http://localhost:7000/update_quantity", {
-          names: order,
-          buyQuantity: order.buyQuantity,
-        })
+        .post("http://localhost:7000/update_quantity", data)
         .then((response) => {
           const res_data = response.data;
         })
@@ -38,6 +40,7 @@ const ViewOrder = () => {
           console.error("Failed to update db quantities", error);
         });
     };
+
 
     const navigate = useNavigate()
     const handleSubmit = () => {

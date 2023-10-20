@@ -92,8 +92,9 @@ app.get("/get_product", function(req, res){
 })
 
 app.post("/update_quantity", function(req, res) {
-    let IDs = req.body.names;
-    let quantities = req.body.buyQuantity;
+    const order = req.body;
+    const IDs = order.productName;
+    const quantities = order.buyQuantity;
 
     console.log("Received POST request with data: IDs =", IDs, "quantities =", quantities);
 
@@ -101,7 +102,7 @@ app.post("/update_quantity", function(req, res) {
 
     IDs.forEach((id, index) => {
       const currentQuantity = quantities[index];
-      const sql = `UPDATE Product SET quantity = ${currentQuantity} WHERE id = ${id};`;
+      const sql = `UPDATE Product SET quantity = ${currentQuantity} WHERE name = '${id}';`;
       console.log("Executing SQL:", sql);
 
       updatePromises.push(db.query(sql));
@@ -117,3 +118,4 @@ app.post("/update_quantity", function(req, res) {
         res.status(500).send('Failed to update quantities');
       });
   });
+
