@@ -1,6 +1,8 @@
-import React from "react"
+import axios from "axios";
+import React, { useEffect } from "react"
 import {useNavigate} from "react-router-dom"
 import {useLocation} from "react-router-dom"
+import App from "./App";
 
 const ViewOrder = () => {
     const location = useLocation();
@@ -8,7 +10,6 @@ const ViewOrder = () => {
     const paymentInfo = location.state.paymentInfo;
     const shippingInfo = location.state.shippingInfo;
     const productName = order.productName;
-    const navigate = useNavigate();
     let title = "View Order Page";
     let totalCost = 0;
 
@@ -22,6 +23,33 @@ const ViewOrder = () => {
 
     for (let i = 0; i < order.productName.length; i++) {
         totalCost += order.buyQuantity[i]*order.productPrice[i];
+    }
+
+    const updateDatabaseQuantities = () => {
+      axios
+        .post("http://localhost:7000/update_quantity", {
+          names: order,
+          buyQuantity: order.buyQuantity,
+        })
+        .then((response) => {
+          const res_data = response.data;
+        })
+        .catch((error) => {
+          console.error("Failed to update db quantities", error);
+        });
+    };
+
+    const navigate = useNavigate()
+    const handleSubmit = () => {
+      updateDatabaseQuantities()
+      navigate('/purchase/viewConfirmation', {
+        replace: true,
+        state: {
+          shippingInfo: shippingInfo,
+          order: order,
+          paymentInfo: paymentInfo,
+        },
+      })
     }
 
     return (
@@ -105,16 +133,7 @@ const ViewOrder = () => {
           </table>
 
           <button
-            onClick={() =>
-              navigate('/purchase/viewConfirmation', {
-                replace: true,
-                state: {
-                  shippingInfo: shippingInfo,
-                  order: order,
-                  paymentInfo: paymentInfo,
-                },
-              })
-            }
+            onClick={handleSubmit}
             className="btn btn-primary"
           >
             Place Order
