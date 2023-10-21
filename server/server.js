@@ -1,4 +1,5 @@
 const express = require("express")
+const path = require("path")
 const inventory = require('./db')
 const orders = require('./order')
 const app = express()
@@ -15,6 +16,8 @@ app.listen(port, () => {
 })
 app.use(cors(corsOptions))
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 const drop_product = "DROP TABLE IF EXISTS Product"
 const create_product = (
     "CREATE TABLE Product ( \
@@ -23,59 +26,65 @@ const create_product = (
         quantity int, \
         description text, \
         price double, \
+        image_url varchar(255), \
         PRIMARY KEY (id) );"
 )
 
 const add_iPhone13 = (
-"INSERT INTO Product (name, quantity, description, price) \
+"INSERT INTO Product (name, quantity, description, price, image_url) \
     VALUES \
     ( \
         'iPhone13', \
         100, \
         'The latest iPhone model with a powerful A15 Bionic chip and a stunning Super Retina XDR display', \
-        799 \
+        799, \
+        '/images/iphone13.jfif' \
     );"
 )
 
 const add_SamsungGalaxyWatch4 = (
-    "INSERT INTO Product (name, quantity, description, price) \
+    "INSERT INTO Product (name, quantity, description, price, image_url) \
     VALUES \
     ( \
         'Samsung Galaxy Watch 4', \
         100, \
         'A feature-packed smartwatch with health and fitness tracking, AMOLED display, and long battery life', \
-        249 \
+        249, \
+        '/images/galaxywatch4.jfif' \
     );"
 )
 
 const add_SonyWH1000XM4Headphones =
-    "INSERT INTO Product (name, quantity, description, price) \
+    "INSERT INTO Product (name, quantity, description, price, image_url) \
     VALUES \
     ( \
         'Sony WH-1000XM4 Headphones', \
         100, \
         'Premium noise-canceling headphones with excellent sound quality and all-day comfort', \
-        349 \
+        349, \
+        '/images/sonyheadphones.jfif' \
     );"
 
 const add_InstantPotDuoEvoPlus =
-"INSERT INTO Product (name, quantity, description, price) \
+"INSERT INTO Product (name, quantity, description, price, image_url) \
 VALUES \
 ( \
     'Instant Pot Duo Evo Plus', \
     100, \
     'A versatile multicooker that can pressure cook, sauté, steam, and more, making meal prep a breeze', \
-    349 \
+    349, \
+    '/images/instantpot.jfif' \
 );"
 
 const add_NintendoSwitch =
-"INSERT INTO Product (name, quantity, description, price) \
+"INSERT INTO Product (name, quantity, description, price, image_url) \
 VALUES \
 ( \
     'Nintendo Switch', \
     100, \
     'A popular gaming console that offers both portable and TV modes for gaming on the go or at home', \
-    299 \
+    299, \
+    '/images/nintendoswitch.jfif' \
 );"
 
 app.get("/init_product_table", function(req, res){
