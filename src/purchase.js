@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import product1 from "./Images/iphone13.jfif";
@@ -6,18 +6,46 @@ import product2 from "./Images/galaxywatch4.jfif";
 import product3 from "./Images/sonyheadphones.jfif";
 import product4 from "./Images/instantpot.jfif";
 import product5 from "./Images/nintendoswitch.jfif";
+import axios from "axios";
 
 const Purchase = () => {
-    const [order, setOrder] = useState({
-        productName: ["iPhone 13", "Samsung Galaxy Watch 4", "Sony WH-1000XM4 Headphones", "Instant Pot Duo Evo Plus", "Nintendo Switch"],
-        productDescription: ["The latest iPhone model with a powerful A15 Bionic chip and a stunning Super Retina XDR display",
-        "A feature-packed smartwatch with health and fitness tracking, AMOLED display, and long battery life",
-        "Premium noise-canceling headphones with excellent sound quality and all-day comfort",
-        "A versatile multicooker that can pressure cook, sauté, steam, and more, making meal prep a breeze",
-        "A popular gaming console that offers both portable and TV modes for gaming on the go or at home"],
-        productPrice: [799, 249, 349, 119, 299],
-        buyQuantity: [0,0,0,0,0],
-    });
+  const [order, setOrder] = useState({
+    productName: [],
+    buyQuantity: [],
+    productDescription: [],
+    productPrice: [],
+  })
+  const [stockQuantity, setStockQuantity] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:7000/get_product")
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          //I don't think we need this but it allows up to not change the return. If we delete this the useState will have no change, but I couldn't get it to work w/o this
+          const productName = response.data.map(product => product.name);
+          const productDescription = response.data.map(product => product.description);
+          const productPrice = response.data.map(product => product.price);
+
+          // Im not sure how we need to do the quantity stuff with the /update_quantity so keeping at 0 for now
+          const buyQuantity = new Array(response.data.length).fill(0);
+
+          setStockQuantity(response.data.map(product => product.quantity));
+
+          //This is populating
+          setOrder({
+            productName,
+            buyQuantity,
+            productDescription,
+            productPrice,
+          });
+        } else {
+          console.error("Invalid response data:", response.data); //If the arrays don't match
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching product data:", error); //Other data issue
+      });
+  }, []);
 
     const navigate = useNavigate();
     const handleSubmit = () => {
@@ -48,7 +76,10 @@ const Purchase = () => {
                   <div className="col-md-5">
                     <label>{productName}</label>
                     <p>{order.productDescription[index]}</p>
-                    <p>${order.productPrice[index]}</p>
+                    <div className="row">
+                      <p className="col-md-6">${order.productPrice[index]}</p>
+                      <p className="col-md-6">{"In stock: " + stockQuantity[index]}</p>
+                    </div>
                   </div>
                   <div className="col-md-5">
                     <div className="form-group">

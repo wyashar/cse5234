@@ -72,6 +72,9 @@ const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200
 }
+
+app.use(cors(corsOptions))
+
 app.use(express.json())
 app.listen(port, () => {
     console.log('RUNNING ON http://localhost:7000')
@@ -88,13 +91,31 @@ app.get("/get_product", function(req, res){
     return res.send(result)
 })
 
-app.post("/update_quantity", function(req, res){
-    let IDs = req.body.names;
-    let quantity = req.body.quantity;
-    IDs.forEach((id_, index) => {
-        const currentQuantity = quantity[index];
-        const result = db.query(`UPDATE Product SET quantity = ${currentQuantity} WHERE id = ${id_};`);
+app.post("/update_quantity", function(req, res) {
+    const order = req.body;
+    const IDs = order.productName;
+    const quantities = order.buyQuantity;
+
+    console.log("Received POST request with data: IDs =", IDs, "quantities =", quantities);
+
+    const updatePromises = [];
+
+    IDs.forEach((id, index) => {
+      const currentQuantity = quantities[index];
+      const sql = `UPDATE Product SET quantity = quantity - ${currentQuantity} WHERE name = '${id}';`;
+      console.log("Executing SQL:", sql);
+
+      updatePromises.push(db.query(sql));
     });
-    return res.send('UPDATE PRODUCT QUANTITIES')
-});
+
+    Promise.all(updatePromises)
+      .then(() => {
+        console.log("Quantities updated successfully");
+        res.send('UPDATE PRODUCT QUANTITIES');
+      })
+      .catch((error) => {
+        console.error('Failed to update quantities:', error);
+        res.status(500).send('Failed to update quantities');
+      });
+  });
 
