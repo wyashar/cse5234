@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import Form from 'react-bootstrap/Form';
 import product1 from "./Images/iphone13.jfif";
 import product2 from "./Images/galaxywatch4.jfif";
 import product3 from "./Images/sonyheadphones.jfif";
@@ -46,6 +45,7 @@ const Purchase = () => {
         console.error("Error fetching product data:", error); //Other data issue
       });
   }, []);
+
 
     const navigate = useNavigate();
     const handleSubmit = () => {

@@ -3,6 +3,16 @@ const db = require('./db')
 const app = express()
 const port = 7000
 const cors = require('cors')
+const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true,
+    optionSuccessStatus: 200
+}
+app.use(express.json())
+app.listen(port, () => {
+    console.log('RUNNING ON http://localhost:7000')
+})
+app.use(cors(corsOptions))
 
 const drop_product = "DROP TABLE IF EXISTS Product"
 const create_product = (
@@ -67,19 +77,8 @@ VALUES \
     299 \
 );"
 
-const corsOptions = {
-    origin: "http://localhost:3000",
-    credentials: true,
-    optionSuccessStatus: 200
-}
-
-app.use(cors(corsOptions))
-
-app.use(express.json())
-app.listen(port, () => {
-    console.log('RUNNING ON http://localhost:7000')
-})
-app.get("/get_product", function(req, res){
+app.get("/init_product_table", function(req, res){
+    console.log("Received GET request for /init_product_table ... ")
     db.query(drop_product)
     db.query(create_product)
     db.query(add_iPhone13)
@@ -87,7 +86,13 @@ app.get("/get_product", function(req, res){
     db.query(add_SamsungGalaxyWatch4)
     db.query(add_NintendoSwitch)
     db.query(add_InstantPotDuoEvoPlus)
+    console.log(" ...Completed GET request for /init_product_table!")
+})
+
+app.get("/get_product", function(req, res){
+    console.log("Received GET request for /get_product ...")
     const result = db.query('select * from Product')
+    console.log(" ... Completed GET request for /get_product!")
     return res.send(result)
 })
 
