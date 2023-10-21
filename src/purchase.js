@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import product1 from "./Images/iphone13.jfif";
-import product2 from "./Images/galaxywatch4.jfif";
-import product3 from "./Images/sonyheadphones.jfif";
-import product4 from "./Images/instantpot.jfif";
-import product5 from "./Images/nintendoswitch.jfif";
-=======
-import Form from 'react-bootstrap/Form';
->>>>>>> stock_check
 import axios from "axios";
 
 const Purchase = () => {
