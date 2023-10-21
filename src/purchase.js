@@ -14,7 +14,8 @@ const Purchase = () => {
     buyQuantity: [],
     productDescription: [],
     productPrice: [],
-  });
+  })
+  const [stockQuantity, setStockQuantity] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:7000/get_product")
@@ -27,6 +28,8 @@ const Purchase = () => {
 
           // Im not sure how we need to do the quantity stuff with the /update_quantity so keeping at 0 for now
           const buyQuantity = new Array(response.data.length).fill(0);
+
+          setStockQuantity(response.data.map(product => product.quantity));
 
           //This is populating
           setOrder({
@@ -73,7 +76,10 @@ const Purchase = () => {
                   <div className="col-md-5">
                     <label>{productName}</label>
                     <p>{order.productDescription[index]}</p>
-                    <p>${order.productPrice[index]}</p>
+                    <div className="row">
+                      <p className="col-md-6">${order.productPrice[index]}</p>
+                      <p className="col-md-6">{"In stock: " + stockQuantity[index]}</p>
+                    </div>
                   </div>
                   <div className="col-md-5">
                     <div className="form-group">

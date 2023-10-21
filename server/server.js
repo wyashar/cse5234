@@ -102,7 +102,7 @@ app.post("/update_quantity", function(req, res) {
 
     IDs.forEach((id, index) => {
       const currentQuantity = quantities[index];
-      const sql = `UPDATE Product SET quantity = ${currentQuantity} WHERE name = '${id}';`;
+      const sql = `UPDATE Product SET quantity = quantity - ${currentQuantity} WHERE name = '${id}';`;
       console.log("Executing SQL:", sql);
 
       updatePromises.push(db.query(sql));
