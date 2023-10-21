@@ -25,6 +25,12 @@ const ViewOrder = () => {
         totalCost += order.buyQuantity[i]*order.productPrice[i];
     }
 
+    const createOrderId = () => {
+      const id = Math.floor(Math.random() * 500) + 242
+      return id
+    }
+
+    const orderId = createOrderId()
     const updateDatabaseQuantities = () => {
       const data = {
         productName: order.productName,
@@ -41,16 +47,35 @@ const ViewOrder = () => {
         });
     };
 
+    const updateOrder = () => {
+      const data = {
+        productName : order.productName,
+        buyQuantity: order.buyQuantity,
+        orderID: orderId
+      }
+
+      axios
+        .post("http://localhost:7000/create_order", data)
+        .then((response) => {
+          const res_data = response.data;
+        })
+        .catch((error) => {
+          console.error("Failed to update db quantities", error);
+        });
+    }
+
 
     const navigate = useNavigate()
     const handleSubmit = () => {
       updateDatabaseQuantities()
+      updateOrder()
       navigate('/purchase/viewConfirmation', {
         replace: true,
         state: {
           shippingInfo: shippingInfo,
           order: order,
           paymentInfo: paymentInfo,
+          orderId: orderId
         },
       })
     }

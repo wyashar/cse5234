@@ -5,8 +5,7 @@ import {useLocation} from "react-router-dom"
 const ViewConfirmation = () => {
     const location = useLocation();
     const order = location.state.order;
-    const paymentInfo = location.state.paymentInfo;
-    const shippingInfo = location.state.shippingInfo;
+    const orderId = location.state.orderId;
     const productName = order.productName;
     const navigate = useNavigate();
     let title = "Confirmation Page";
@@ -21,7 +20,7 @@ const ViewConfirmation = () => {
         <div className="container">
           <h1>{title}</h1>
           <h2>Thank you for placing your order!</h2>
-          <p>Confirmation number: {Math.floor(Math.random() * 999999999) + 100000000}</p>
+          <p>Confirmation number: {orderId}</p>
           <h2>Order Details:</h2>
           <table className="table table-bordered">
             <thead>

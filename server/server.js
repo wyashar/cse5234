@@ -1,5 +1,6 @@
 const express = require("express")
-const db = require('./db')
+const inventory = require('./db')
+const orders = require('./order')
 const app = express()
 const port = 7000
 const cors = require('cors')
@@ -79,19 +80,19 @@ VALUES \
 
 app.get("/init_product_table", function(req, res){
     console.log("Received GET request for /init_product_table ... ")
-    db.query(drop_product)
-    db.query(create_product)
-    db.query(add_iPhone13)
-    db.query(add_SonyWH1000XM4Headphones)
-    db.query(add_SamsungGalaxyWatch4)
-    db.query(add_NintendoSwitch)
-    db.query(add_InstantPotDuoEvoPlus)
+    inventory.query(drop_product)
+    inventory.query(create_product)
+    inventory.query(add_iPhone13)
+    inventory.query(add_SonyWH1000XM4Headphones)
+    inventory.query(add_SamsungGalaxyWatch4)
+    inventory.query(add_NintendoSwitch)
+    inventory.query(add_InstantPotDuoEvoPlus)
     console.log(" ...Completed GET request for /init_product_table!")
 })
 
 app.get("/get_product", function(req, res){
     console.log("Received GET request for /get_product ...")
-    const result = db.query('select * from Product')
+    const result = inventory.query('select * from Product')
     console.log(" ... Completed GET request for /get_product!")
     return res.send(result)
 })
@@ -110,7 +111,7 @@ app.post("/update_quantity", function(req, res) {
       const sql = `UPDATE Product SET quantity = quantity - ${currentQuantity} WHERE name = '${id}';`;
       console.log("Executing SQL:", sql);
 
-      updatePromises.push(db.query(sql));
+      updatePromises.push(inventory.query(sql));
     });
 
     Promise.all(updatePromises)
@@ -123,4 +124,30 @@ app.post("/update_quantity", function(req, res) {
         res.status(500).send('Failed to update quantities');
       });
   });
+
+
+
+  app.post("/create_order", function(req, res){
+    const order = req.body;
+    const IDs = ['Sony WH-1000XM4 Headphones Quantity', 'Nintendo Switch Quantity', 'Instant Pot Duo Evo Plus Quantity', 'iPhone13 Quantity', 'Samsung Galaxy Watch 4 Quantity'];
+    const quantities = order.buyQuantity;
+    const orderID = order.orderID;
+
+    const add_order = (
+        `INSERT INTO Orders \
+         (orderId, \`Sony WH-1000XM4 Headphones Quantity\`, \`Nintendo Switch Quantity\`, \`Instant Pot Duo Evo Plus Quantity\`, \`iPhone13 Quantity\`, \`Samsung Galaxy Watch 4 Quantity\`) \
+         VALUES \
+         (${orderID}, 0, 0, 0, 0, 0);`
+    );
+
+    orders.query(add_order);
+
+    IDs.forEach((id, index) => {
+        const currentQuantity = quantities[index];
+        const sql = `UPDATE Orders SET \`${id}\` = ${currentQuantity} WHERE orderId = ${orderID}`;
+        console.log("Executed SQL:", sql);
+        orders.query(sql);
+    });
+});
+
 
