@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
-import product1 from "./Images/iphone13.jfif";
-import product2 from "./Images/galaxywatch4.jfif";
-import product3 from "./Images/sonyheadphones.jfif";
-import product4 from "./Images/instantpot.jfif";
-import product5 from "./Images/nintendoswitch.jfif";
 import axios from "axios";
 
 const Purchase = () => {
@@ -16,6 +11,7 @@ const Purchase = () => {
     productPrice: [],
   })
   const [stockQuantity, setStockQuantity] = useState([]);
+  const [productImages, setImages] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:7000/get_product")
@@ -30,6 +26,7 @@ const Purchase = () => {
           const buyQuantity = new Array(response.data.length).fill(0);
 
           setStockQuantity(response.data.map(product => product.quantity));
+          setImages(response.data.map(product => window.location.href.replace(window.location.pathname, '') + product.image_url));
 
           //This is populating
           setOrder({
@@ -49,13 +46,18 @@ const Purchase = () => {
 
     const navigate = useNavigate();
     const handleSubmit = () => {
-        navigate(
+
+      // checks that at least one box has a quantity, and checks that all quantities dont exceed the stock.
+        if (!order.buyQuantity.some(quantity => parseInt(quantity, 10) !== 0)) {
+          alert("You must select a quantity of some item to proceed.");
+        } else {
+          navigate(
             '/purchase/shippingEntry',
             {replace: true, state:{order: order}}
-            )
+          )
+        }
     }
 
-    const productImages = [product1, product2, product3, product4, product5];
     let title = "Purchase Items"
     return (
         <div className="container">
@@ -88,7 +90,9 @@ const Purchase = () => {
                         type="number"
                         id={`quantity-${index}`}
                         className="form-control"
-                        required
+                        min = "0"
+                        max = {`${stockQuantity[index]}`}
+                        //required
                         onChange={(e) => {
                             const updatedOrder = { ...order }
                             updatedOrder.buyQuantity[index] = e.target.value
