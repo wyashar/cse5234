@@ -23,7 +23,17 @@ function App() {
         console.log("Successfully loaded app data")
       })
       .catch((error) => {
-        console.error("Error fetching initial data:", error);
+        console.error("Error fetching initial product data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:7000/init_orders_table")
+      .then((response) => {
+        console.log("Successfully loaded app data")
+      })
+      .catch((error) => {
+        console.error("Error fetching initial order data:", error);
       });
   }, []);
 
