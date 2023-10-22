@@ -30,6 +30,18 @@ const create_product = (
         PRIMARY KEY (id) );"
 )
 
+const drop_Orders = "DROP TABLE IF EXISTS Orders"
+const create_Orders = (
+    "CREATE TABLE Orders ( \
+        orderId int NOT NULL AUTO_INCREMENT, \
+        \`Sony WH-1000XM4 Headphones Quantity\` int, \
+        \`Nintendo Switch Quantity\` int, \
+        \`Instant Pot Duo Evo Plus Quantity\` int, \
+        \`iPhone13 Quantity\` int, \
+        \`Samsung Galaxy Watch 4 Quantity\` int, \
+        PRIMARY KEY (orderId) );"
+)
+
 const add_iPhone13 = (
 "INSERT INTO Product (name, quantity, description, price, image_url) \
     VALUES \
@@ -97,6 +109,14 @@ app.get("/init_product_table", function(req, res){
     inventory.query(add_NintendoSwitch)
     inventory.query(add_InstantPotDuoEvoPlus)
     console.log(" ...Completed GET request for /init_product_table!")
+})
+
+app.get("/init_orders_table", function(req, res){
+    console.log("Received GET request for /init_orders_table ... ")
+    orders.query(drop_Orders)
+    orders.query(create_Orders)
+
+    console.log(" ...Completed GET request for /init_orders_table!")
 })
 
 app.get("/get_product", function(req, res){
