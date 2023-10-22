@@ -17,24 +17,33 @@ import About from './components/about';
 import Cart from './components/cart';
 
 function App() {
+  const productInit = localStorage.getItem("productInit");
+  const orderInit = localStorage.getItem("orderInit");
+
   useEffect(() => {
-    axios.get("http://localhost:7000/init_product_table")
-      .then((response) => {
-        console.log("Successfully loaded app data")
-      })
-      .catch((error) => {
+    if (!productInit) {
+      axios.get("http://localhost:7000/init_product_table")
+        .then((response) => {
+          console.log("Successfully loaded app data")
+        })
+        .catch((error) => {
         console.error("Error fetching initial product data:", error);
-      });
+        });
+        localStorage.setItem("productInit", "true");
+    }
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:7000/init_orders_table")
-      .then((response) => {
-        console.log("Successfully loaded app data")
-      })
-      .catch((error) => {
+    if (!orderInit) {
+      axios.get("http://localhost:7000/init_orders_table")
+        .then((response) => {
+          console.log("Successfully loaded app data")
+        })
+        .catch((error) => {
         console.error("Error fetching initial order data:", error);
-      });
+        });
+        localStorage.setItem("orderInit", "true");
+    }
   }, []);
 
   return (
