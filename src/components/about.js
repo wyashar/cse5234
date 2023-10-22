@@ -1,7 +1,7 @@
 import React from "react";
-import YasharHeadshot from "../Images/headshotYashar.jpg";
-import HunterHeadshot from "../Images/suitHunter.jpg";
-import MacrayHeadshot from "../Images/HeadshotMac.jpg";
+import YasharHeadshot from "../images/headshotYashar.jpg";
+import HunterHeadshot from "../images/suitHunter.jpg";
+import MacrayHeadshot from "../images/HeadshotMac.jpg";
 
 const About = () => {
   

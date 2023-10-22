@@ -10,13 +10,13 @@ const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200
 }
+const hostname = 'localhost'
+app.use(cors(corsOptions))
+app.use('/images', express.static(path.join(__dirname, '..', 'src', 'images')));
 app.use(express.json())
 app.listen(port, () => {
     console.log('RUNNING ON http://localhost:7000')
 })
-app.use(cors(corsOptions))
-
-app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const drop_product = "DROP TABLE IF EXISTS Product"
 const create_product = (
@@ -43,61 +43,64 @@ const create_Orders = (
 )
 
 const add_iPhone13 = (
-"INSERT INTO Product (name, quantity, description, price, image_url) \
+    `INSERT INTO Product (name, quantity, description, price, image_url) \
     VALUES \
     ( \
         'iPhone13', \
         100, \
         'The latest iPhone model with a powerful A15 Bionic chip and a stunning Super Retina XDR display', \
         799, \
-        '/images/iphone13.jfif' \
-    );"
+        'http://${hostname}:${port}/images/iphone13.jfif' \
+    );`
 )
 
 const add_SamsungGalaxyWatch4 = (
-    "INSERT INTO Product (name, quantity, description, price, image_url) \
+    `INSERT INTO Product (name, quantity, description, price, image_url) \
     VALUES \
     ( \
         'Samsung Galaxy Watch 4', \
         100, \
         'A feature-packed smartwatch with health and fitness tracking, AMOLED display, and long battery life', \
         249, \
-        '/images/galaxywatch4.jfif' \
-    );"
+        'http://${hostname}:${port}/images/galaxywatch4.jfif' \
+    );`
 )
 
-const add_SonyWH1000XM4Headphones =
-    "INSERT INTO Product (name, quantity, description, price, image_url) \
+const add_SonyWH1000XM4Headphones = (
+    `INSERT INTO Product (name, quantity, description, price, image_url) \
     VALUES \
     ( \
         'Sony WH-1000XM4 Headphones', \
         100, \
         'Premium noise-canceling headphones with excellent sound quality and all-day comfort', \
         349, \
-        '/images/sonyheadphones.jfif' \
-    );"
+        'http://${hostname}:${port}/images/sonyheadphones.jfif' \
+    );`
+)
 
-const add_InstantPotDuoEvoPlus =
-"INSERT INTO Product (name, quantity, description, price, image_url) \
-VALUES \
-( \
-    'Instant Pot Duo Evo Plus', \
-    100, \
-    'A versatile multicooker that can pressure cook, sauté, steam, and more, making meal prep a breeze', \
-    349, \
-    '/images/instantpot.jfif' \
-);"
+const add_InstantPotDuoEvoPlus = (
+    `INSERT INTO Product (name, quantity, description, price, image_url) \
+    VALUES \
+    ( \
+        'Instant Pot Duo Evo Plus', \
+        100, \
+        'A versatile multicooker that can pressure cook, sauté, steam, and more, making meal prep a breeze', \
+        349, \
+        'http://${hostname}:${port}/images/instantpot.jfif' \
+    );`
+)
 
-const add_NintendoSwitch =
-"INSERT INTO Product (name, quantity, description, price, image_url) \
-VALUES \
-( \
-    'Nintendo Switch', \
-    100, \
-    'A popular gaming console that offers both portable and TV modes for gaming on the go or at home', \
-    299, \
-    '/images/nintendoswitch.jfif' \
-);"
+const add_NintendoSwitch = (
+    `INSERT INTO Product (name, quantity, description, price, image_url) \
+    VALUES \
+    ( \
+        'Nintendo Switch', \
+        100, \
+        'A popular gaming console that offers both portable and TV modes for gaming on the go or at home', \
+        299, \
+        'http://${hostname}:${port}/images/nintendoswitch.jfif' \
+    );`
+)
 
 app.get("/init_product_table", function(req, res){
     console.log("Received GET request for /init_product_table ... ")
@@ -158,7 +161,8 @@ app.post("/update_quantity", function(req, res) {
 
   app.post("/create_order", function(req, res){
     const order = req.body;
-    const IDs = ['Sony WH-1000XM4 Headphones Quantity', 'Nintendo Switch Quantity', 'Instant Pot Duo Evo Plus Quantity', 'iPhone13 Quantity', 'Samsung Galaxy Watch 4 Quantity'];
+    //const IDs = ['Sony WH-1000XM4 Headphones Quantity', 'Nintendo Switch Quantity', 'Instant Pot Duo Evo Plus Quantity', 'iPhone13 Quantity', 'Samsung Galaxy Watch 4 Quantity'];
+    const IDs = order.productName.map(productName => productName + " Quantity");
     const quantities = order.buyQuantity;
     const orderID = order.orderID;
 

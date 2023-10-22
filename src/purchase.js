@@ -25,7 +25,7 @@ const Purchase = () => {
           const buyQuantity = new Array(response.data.length).fill(0);
 
           setStockQuantity(response.data.map(product => product.quantity));
-          setImages(response.data.map(product => window.location.href.replace(window.location.pathname, '') + product.image_url));
+          setImages(response.data.map(product => product.image_url));
 
           //This is populating
           setOrder({
@@ -48,7 +48,10 @@ const Purchase = () => {
     const handleSubmit = () => {
 
       // checks that at least one box has a quantity, and checks that all quantities dont exceed the stock.
-        if (!order.buyQuantity.some(quantity => parseInt(quantity, 10) !== 0)) {
+        if (!order.buyQuantity.some(quantity => {
+            const parsedQuantity = parseInt(quantity, 10);
+            return !isNaN(parsedQuantity) && parsedQuantity !== 0 && quantity !== "";
+          })) {
           alert("You must select a quantity of some item to proceed.");
         } else {
           navigate(
