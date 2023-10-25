@@ -10,6 +10,10 @@ const corsOptions = {
     credentials: true,
     optionSuccessStatus: 200
 }
+var orderInit = false;
+var productInit = false;
+
+
 const hostname = 'localhost'
 app.use(cors(corsOptions))
 app.use('/images', express.static(path.join(__dirname, '..', 'src', 'images')));
@@ -103,23 +107,31 @@ const add_NintendoSwitch = (
 )
 
 app.get("/init_product_table", function(req, res){
-    console.log("Received GET request for /init_product_table ... ")
-    inventory.query(drop_product)
-    inventory.query(create_product)
-    inventory.query(add_iPhone13)
-    inventory.query(add_SonyWH1000XM4Headphones)
-    inventory.query(add_SamsungGalaxyWatch4)
-    inventory.query(add_NintendoSwitch)
-    inventory.query(add_InstantPotDuoEvoPlus)
-    console.log(" ...Completed GET request for /init_product_table!")
+
+    if (!productInit) {
+        productInit = true;
+        console.log("Received GET request for /init_product_table ... ")
+        inventory.query(drop_product)
+        inventory.query(create_product)
+        inventory.query(add_iPhone13)
+        inventory.query(add_SonyWH1000XM4Headphones)
+        inventory.query(add_SamsungGalaxyWatch4)
+        inventory.query(add_NintendoSwitch)
+        inventory.query(add_InstantPotDuoEvoPlus)
+        console.log(" ...Completed GET request for /init_product_table!")
+    }
 })
 
 app.get("/init_orders_table", function(req, res){
-    console.log("Received GET request for /init_orders_table ... ")
-    orders.query(drop_Orders)
-    orders.query(create_Orders)
 
-    console.log(" ...Completed GET request for /init_orders_table!")
+    if (!orderInit) {
+        orderInit = true;
+        console.log("Received GET request for /init_orders_table ... ")
+        orders.query(drop_Orders)
+        orders.query(create_Orders)
+
+        console.log(" ...Completed GET request for /init_orders_table!")
+    }
 })
 
 app.get("/get_product", function(req, res){
