@@ -75,6 +75,14 @@
   .nav-icon {
     display: none;
   }
+
+  #shoppingCartNumber {
+    font-weight: bold;
+    color: #212529;
+    margin-top: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
   
   @media screen and (max-width: 960px) {
     .nav-menu {
