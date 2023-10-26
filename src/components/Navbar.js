@@ -55,10 +55,14 @@ function NavBar() {
                 to="/cart"
                 activeClassName="active"
                 className="nav-links"
+                id="shoppingCartButton"
                 onClick={handleClick}
               >
                 Shopping Cart
               </NavLink>
+            </li>
+            <li>
+              <p id="shoppingCartNumber">0</p>
             </li>
           </ul>
           <div className="nav-icon" onClick={handleClick}>

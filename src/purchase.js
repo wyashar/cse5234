@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useCookies } from 'react-cookie';
 
 const Purchase = () => {
   const [order, setOrder] = useState({
@@ -11,6 +12,7 @@ const Purchase = () => {
   })
   const [stockQuantity, setStockQuantity] = useState([]);
   const [productImages, setImages] = useState([]);
+  const [cookies, setCookie] = useCookies(['productName', 'buyQuantity', 'productDescription', 'productPrice']);
 
   useEffect(() => {
     axios.get("http://localhost:7000/get_product")
@@ -21,8 +23,15 @@ const Purchase = () => {
           const productDescription = response.data.map(product => product.description);
           const productPrice = response.data.map(product => product.price);
 
-          // Im not sure how we need to do the quantity stuff with the /update_quantity so keeping at 0 for now
           const buyQuantity = new Array(response.data.length).fill(0);
+          if (cookies.buyQuantity == null || cookies.buyQuantity.length == 0){
+            setCookie('buyQuantity', buyQuantity);
+          } else {
+            for (let i = 0; i < buyQuantity.length; i++) {
+              buyQuantity[i] = cookies.buyQuantity[i];
+            } 
+          }  
+          displayShoppingCartQuantity() 
 
           setStockQuantity(response.data.map(product => product.quantity));
           setImages(response.data.map(product => product.image_url));
@@ -43,10 +52,24 @@ const Purchase = () => {
       });
   }, []);
 
+  function displayShoppingCartQuantity() {
+    if (cookies.productName != null && cookies.productName.length != 0) {
+      const shoppingCartButton = document.getElementById("shoppingCartButton");
+      const shoppingCartNumber = document.getElementById("shoppingCartNumber");
+      let totalQuantity = 0;
+      shoppingCartButton.style.color = '#212529';
+      shoppingCartButton.style.backgroundColor = '#ffdd40';
+      shoppingCartButton.style.fontWeight = 'bold';
+      shoppingCartNumber.style.color = '#212529';
+      shoppingCartNumber.style.backgroundColor = '#ffdd40';
+      cookies.buyQuantity.forEach(quantity => {totalQuantity += parseInt(quantity, 10);});
+      shoppingCartNumber.innerHTML = totalQuantity;
+    }
+  }
+
 
     const navigate = useNavigate();
     const handleSubmit = () => {
-
       // checks that at least one box has a quantity, and checks that all quantities dont exceed the stock.
         if (!order.buyQuantity.some(quantity => {
             const parsedQuantity = parseInt(quantity, 10);
@@ -54,11 +77,33 @@ const Purchase = () => {
           })) {
           alert("You must select a quantity of some item to proceed.");
         } else {
+          setCookie('productName', order.productName);
+          setCookie('buyQuantity', order.buyQuantity);
+          setCookie('productDescription', order.productDescription);
+          setCookie('productPrice', order.productPrice);
+          displayShoppingCartQuantity()
           navigate(
             '/purchase/shippingEntry',
             {replace: true, state:{order: order}}
           )
         }
+    }
+
+    const handleAddToCart = () => {
+      // checks that at least one box has a quantity, and checks that all quantities dont exceed the stock.
+      if (!order.buyQuantity.some(quantity => {
+        const parsedQuantity = parseInt(quantity, 10);
+        return !isNaN(parsedQuantity) && parsedQuantity !== 0 && quantity !== "";
+        })) {
+        alert("You must select a quantity of some item to proceed.");
+      } else { 
+        setCookie('productName', order.productName);
+        setCookie('buyQuantity', order.buyQuantity);
+        setCookie('productDescription', order.productDescription);
+        setCookie('productPrice', order.productPrice);
+        displayShoppingCartQuantity()
+        window.location.reload(true);
+      }
     }
 
     let title = "Purchase Items"
@@ -95,10 +140,13 @@ const Purchase = () => {
                         className="form-control"
                         min = "0"
                         max = {`${stockQuantity[index]}`}
-                        //required
+                        defaultValue = {`${cookies.buyQuantity[index]}`}
                         onChange={(e) => {
                             const updatedOrder = { ...order }
                             updatedOrder.buyQuantity[index] = e.target.value
+                            if (updatedOrder.buyQuantity[index] > stockQuantity[index]) {
+                              updatedOrder.buyQuantity[index] = stockQuantity[index];
+                            }
                             setOrder(updatedOrder)
                         }}
                       />
@@ -106,7 +154,8 @@ const Purchase = () => {
                   </div>
                 </div>
               ))}
-              <button type="submit" className="btn btn-outline-primary">Submit</button>
+              <button type="submit" className="btn btn-outline-primary m-3">Purchase Now</button>
+              <button type="button" onClick={handleAddToCart} className="btn btn-outline-primary">Add to Cart</button> 
             </form>
         </div>
     )

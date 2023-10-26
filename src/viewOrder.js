@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useEffect } from "react"
 import {useNavigate} from "react-router-dom"
 import {useLocation} from "react-router-dom"
+import { useCookies } from 'react-cookie';
 import App from "./App";
 
 const ViewOrder = () => {
+  const [cookies, setCookie] = useCookies(['productName', 'buyQuantity', 'productDescription', 'productPrice']);
     const location = useLocation();
     const order = location.state.order;
     const paymentInfo = location.state.paymentInfo;
@@ -69,6 +71,17 @@ const ViewOrder = () => {
     const handleSubmit = () => {
       updateDatabaseQuantities()
       updateOrder()
+      
+      const shoppingCartButton = document.getElementById("shoppingCartButton");
+        const shoppingCartNumber = document.getElementById("shoppingCartNumber");
+        setCookie('productName', []);
+        setCookie('buyQuantity', []);
+        setCookie('productDescription', []);
+        setCookie('productPrice', []);
+        shoppingCartButton.style.cssText = '';
+        shoppingCartNumber.style.cssText = '';
+        shoppingCartNumber.innerHTML = 0;
+
       navigate('/purchase/viewConfirmation', {
         replace: true,
         state: {
