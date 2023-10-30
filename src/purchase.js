@@ -15,7 +15,7 @@ const Purchase = () => {
   const [cookies, setCookie] = useCookies(['productName', 'buyQuantity', 'productDescription', 'productPrice']);
 
   useEffect(() => {
-    axios.get("http://localhost:7000/get_product")
+    axios.get("http://localhost:7000/products")
       .then((response) => {
         if (Array.isArray(response.data)) {
           //I don't think we need this but it allows up to not change the return. If we delete this the useState will have no change, but I couldn't get it to work w/o this
@@ -29,12 +29,12 @@ const Purchase = () => {
           } else {
             for (let i = 0; i < buyQuantity.length; i++) {
               buyQuantity[i] = cookies.buyQuantity[i];
-            } 
-          }  
-          displayShoppingCartQuantity() 
+            }
+          }
+          displayShoppingCartQuantity()
 
           setStockQuantity(response.data.map(product => product.quantity));
-          setImages(response.data.map(product => product.image_url));
+          setImages(response.data.map(product => product.image));
 
           //This is populating
           setOrder({
@@ -96,7 +96,7 @@ const Purchase = () => {
         return !isNaN(parsedQuantity) && parsedQuantity !== 0 && quantity !== "";
         })) {
         alert("You must select a quantity of some item to proceed.");
-      } else { 
+      } else {
         setCookie('productName', order.productName);
         setCookie('buyQuantity', order.buyQuantity);
         setCookie('productDescription', order.productDescription);
@@ -155,7 +155,7 @@ const Purchase = () => {
                 </div>
               ))}
               <button type="submit" className="btn btn-outline-primary m-3">Purchase Now</button>
-              <button type="button" onClick={handleAddToCart} className="btn btn-outline-primary">Add to Cart</button> 
+              <button type="button" onClick={handleAddToCart} className="btn btn-outline-primary">Add to Cart</button>
             </form>
         </div>
     )
