@@ -12,8 +12,8 @@ const corsOptions = {
 }
 
 AWS.config.update({
-    accessKeyId: $accessKeyId,
-    secretAccessKey: $secretAccessKey,
+    accessKeyId: "AKIA4FCY35473OJIH2W5",
+    secretAccessKey: "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",
     region: 'us-east-2',
 })
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -28,7 +28,7 @@ app.listen(port, () => {
 
 app.get('/products', (req, res) => {
     const params = {
-      TableName: 'Products', // Replace with your table name
+      TableName: 'Products',
     }
 
     docClient.scan(params, (err, data) => {
@@ -45,8 +45,7 @@ app.get('/products', (req, res) => {
 app.post('/create_order', (req, res) => {
     const orderData = req.body;
 
-    const orderId = orderData.orderId; // Extract the orderId from the request body
-
+    const orderId = orderData.orderId;
     const params = {
       TableName: 'Orders',
       Item: {
@@ -76,6 +75,42 @@ productMap.set("Nintendo Switch", 5);
 
 
 app.post('/update_quantity', (req, res) => {
-    //TODO: UPDATE QUANTITIES IN THE PRODUCT TABLE
-  });
+  const orderData = req.body;
+  const params = {
+    TableName: 'Products',
+    Key: {
+      id: productMap.get(orderData.name)
+    }
+  }
 
+  docClient.get(params, (err, data) => {
+    if (err) {
+      console.error("Error retrieving data from the database: ", err)
+      res.status(500).send("Error retrieving data from the database")
+      return;
+    }
+
+    const initialQuantity = data.Item.quantity;
+    const newQuantity = initialQuantity - orderData.buyQuantity;
+
+    const updateParams = {
+      TableName: 'Products',
+      Key: {
+        id: productMap.get(orderData.name)
+      },
+      UpdateExpression: 'set quantity = :q',
+      ExpressionAttributeValues: {
+        ':q': newQuantity
+      }
+    }
+
+    docClient.update(updateParams, (updateErr, updateData) => {
+      if (updateErr) {
+        console.error("Error updating quantity in the database: ", updateErr);
+        res.status(500).send("Error updating quantity in the database");
+      } else {
+        res.status(200).send("Quantity updated successfully");
+      }
+    })
+  })
+})
