@@ -34,44 +34,45 @@ const ViewOrder = () => {
 
     const orderId = createOrderId()
     const updateDatabaseQuantities = () => {
-      const data = {
-        productName: order.productName,
-        buyQuantity: order.buyQuantity,
-      };
 
-      axios
-        .post("http://localhost:7000/update_quantity", data)
-        .then((response) => {
-          const res_data = response.data;
-        })
+      for(let i = 0; i < order.productName.length; i++){
+        const data = {
+          name: order.productName[i],
+          buyQuantity: order.buyQuantity[i]
+        }
+        axios.post("http://localhost:7000/update_quantity", data)
         .catch((error) => {
-          console.error("Failed to update db quantities", error);
-        });
+          console.error("Failed to update db quantities", error)
+        })
+      }
     };
 
     const updateOrder = () => {
       const data = {
-        productName : order.productName,
+        name: order.productName,
         buyQuantity: order.buyQuantity,
-        orderID: orderId
-      }
+        orderId: orderId,
+      };
 
       axios
         .post("http://localhost:7000/create_order", data)
         .then((response) => {
           const res_data = response.data;
+          console.log("Order created successfully:", res_data);
         })
         .catch((error) => {
-          console.error("Failed to update db quantities", error);
+          console.error("Failed to create an order", error);
         });
-    }
+    };
+
+
 
 
     const navigate = useNavigate()
     const handleSubmit = () => {
       updateDatabaseQuantities()
       updateOrder()
-      
+
       const shoppingCartButton = document.getElementById("shoppingCartButton");
         const shoppingCartNumber = document.getElementById("shoppingCartNumber");
         setCookie('productName', []);
