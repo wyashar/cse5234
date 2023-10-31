@@ -4,6 +4,7 @@ const app = express()
 const port = 7000
 const cors = require('cors')
 const AWS = require('aws-sdk')
+const dotenv = require('dotenv')
 
 const corsOptions = {
     origin: "http://localhost:3000",
@@ -11,10 +12,11 @@ const corsOptions = {
     optionSuccessStatus: 200
 }
 
+dotenv.config();
 AWS.config.update({
-    accessKeyId: "AKIA4FCY35473OJIH2W5",
-    secretAccessKey: "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",
-    region: 'us-east-2',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
 })
 const docClient = new AWS.DynamoDB.DocumentClient();
 
