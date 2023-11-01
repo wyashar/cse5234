@@ -7,6 +7,7 @@ const ViewConfirmation = () => {
     const order = location.state.order;
     const orderId = location.state.orderId;
     const productName = order.productName;
+    const stockErrors = location.state.stockErrors;
     const navigate = useNavigate();
     let title = "Confirmation Page";
     let totalCost = 0;
@@ -40,6 +41,19 @@ const ViewConfirmation = () => {
               ))}
             </tbody>
           </table>
+          <p className="text-danger">
+            {stockErrors.length > 0 && (
+              <div>
+                <p>Due to unavailable stock, the following items have been removed from your order:</p>
+                <ul>
+                  {stockErrors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+                <p>NOTE: You will not be charged for these items.</p>
+              </div>
+            )}
+          </p>
           <p>Total order cost: ${totalCost}</p>
           <button className="btn btn-outline-primary" onClick={() => navigate('/purchase')}>
             Return To Catalog

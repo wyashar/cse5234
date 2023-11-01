@@ -4,7 +4,7 @@ const app = express()
 const port = 7000
 const cors = require('cors')
 const AWS = require('aws-sdk')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 const corsOptions = {
     origin: "http://localhost:3000",
@@ -12,7 +12,6 @@ const corsOptions = {
     optionSuccessStatus: 200
 }
 
-dotenv.config();
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -94,6 +93,12 @@ app.post('/update_quantity', (req, res) => {
 
     const initialQuantity = data.Item.quantity;
     const newQuantity = initialQuantity - orderData.buyQuantity;
+
+    if (newQuantity < 0) {
+        console.error(`Not enough stock available for ${orderData.name}`)
+        res.status(400).json({ error: `Not enough stock available for ${orderData.name}.`, name: orderData.name });
+        return;
+    }
 
     const updateParams = {
       TableName: 'Products',
