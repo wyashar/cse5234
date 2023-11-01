@@ -28,7 +28,8 @@ const ViewOrder = () => {
     }
 
     const createOrderId = () => {
-      const id = Math.floor(Math.random() * 500) + 242
+      const date = new Date();
+      const id = parseInt(`${Math.floor(Math.random() * 500) + 242}${date.getDate()}${date.getHours()}`);
       return id
     }
 
