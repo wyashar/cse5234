@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import {useNavigate} from "react-router-dom"
 import {useLocation} from "react-router-dom"
 import { useCookies } from 'react-cookie';
@@ -12,6 +12,8 @@ const ViewOrder = () => {
     const paymentInfo = location.state.paymentInfo;
     const shippingInfo = location.state.shippingInfo;
     const productName = order.productName;
+    const [stockErrors, setStockErrors] = useState([]);
+    const [quantitiesFinished, setQuantitiesFinished] = useState(false);
     let title = "View Order Page";
     let totalCost = 0;
 
@@ -42,8 +44,27 @@ const ViewOrder = () => {
           buyQuantity: order.buyQuantity[i]
         }
         axios.post("http://localhost:7000/update_quantity", data)
+        .then((response) => {
+          if (i === order.productName.length - 1) {
+            setQuantitiesFinished(true);
+          }
+        })
         .catch((error) => {
-          console.error("Failed to update db quantities", error)
+          if (error.response && error.response.data) {
+            const errorData = error.response.data;
+            if (errorData.name) {
+              setStockErrors(oldArray => [...oldArray, errorData.name]);
+              const index = order.productName.indexOf(errorData.name)
+              order.productName.splice(index, 1)
+              order.buyQuantity.splice(index, 1)
+              order.productDescription.splice(index, 1)
+              order.productPrice.splice(index, 1)
+              if (i === order.productName.length - 1) {
+                setQuantitiesFinished(true);
+              }
+            }
+          }
+          console.error(`Failed to update db quantities`, error);
         })
       }
     };
@@ -72,9 +93,12 @@ const ViewOrder = () => {
     const navigate = useNavigate()
     const handleSubmit = () => {
       updateDatabaseQuantities()
-      updateOrder()
+    }
 
-      const shoppingCartButton = document.getElementById("shoppingCartButton");
+    useEffect(() => {
+      if (quantitiesFinished) {
+        updateOrder()
+        const shoppingCartButton = document.getElementById("shoppingCartButton");
         const shoppingCartNumber = document.getElementById("shoppingCartNumber");
         setCookie('productName', []);
         setCookie('buyQuantity', []);
@@ -83,17 +107,18 @@ const ViewOrder = () => {
         shoppingCartButton.style.cssText = '';
         shoppingCartNumber.style.cssText = '';
         shoppingCartNumber.innerHTML = 0;
-
-      navigate('/purchase/viewConfirmation', {
-        replace: true,
-        state: {
+        navigate('/purchase/viewConfirmation', {
+          replace: true,
+          state: {
           shippingInfo: shippingInfo,
           order: order,
           paymentInfo: paymentInfo,
-          orderId: orderId
-        },
-      })
-    }
+          orderId: orderId,
+          stockErrors: stockErrors
+          },
+        })
+      }
+    }, [quantitiesFinished]);
 
     return (
         <div className="container">
@@ -122,6 +147,19 @@ const ViewOrder = () => {
               </tr>
             </tfoot>
           </table>
+          <p className="text-danger">
+            {stockErrors.length > 0 && (
+              <div>
+                <p>Due to unavailable stock, the following items have been removed from your order:</p>
+                <ul>
+                  {stockErrors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+                <p>NOTE: You will not be charged for these items.</p>
+              </div>
+            )}
+          </p>
 
           <h2>Payment Info:</h2>
           <table className="table">
@@ -174,13 +212,21 @@ const ViewOrder = () => {
               </tr>
             </tbody>
           </table>
-
-          <button
+          {stockErrors.length > 0 ? (
+            <button
+            onClick={() => navigate('/purchase')}
+            className="btn btn-primary"
+            >
+            Return To Catalog
+            </button>
+          ) : (
+            <button
             onClick={handleSubmit}
             className="btn btn-primary"
-          >
+            >
             Place Order
-          </button>
+            </button>
+          )}
         </div>
       )
 }
