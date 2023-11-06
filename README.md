@@ -17,6 +17,9 @@ This full-stack eCommerce platform was developed as part of a semester-long proj
 
 To use this application, you need to provide AWS credentials. These credentials should be stored in a `.env` file located in the `~/cse5234/server` directory. Since this repository is public, the credentials are not tracked by Git. Make sure to include the following AWS credentials:
 
+ - AWS_ACCESS_KEY_ID
+ - AWS_SECRET_ACCESS_KEY
+ - AWS_REGION
 
 ## How to Run
 
