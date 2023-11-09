@@ -74,6 +74,12 @@ const ViewOrder = () => {
         name: order.productName,
         buyQuantity: order.buyQuantity,
         orderId: orderId,
+        companyName: "CSE5234",
+        companyNumber: "1999",
+        customerName: shippingInfo.name,
+        customerCardNum: paymentInfo.cardNumber,
+        customerExp Date: paymentInfo.cardExp,
+        customerCVV: paymentInfo.cardCVV
       };
 
       axios

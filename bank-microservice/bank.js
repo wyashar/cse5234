@@ -24,4 +24,10 @@ app.post('/can_pay', (req, res) => {
     const customerCardNum = info.customerCardNum
     const customerExpDate = info.customerExpDate
     const customerCVV = info.customerCVV
+    
+    const confirmationString = "Payment succeeded. Bussiness with name " 
+     + companyName +" with numnber " + companyNumber + " and customer named :" + customerName
+     + "with credit card info " + customerCardNum + ", " + customerExpDate + ", " + customerCVV
+
+     res.status(200).send(confirmationString)
 })
