@@ -1,4 +1,5 @@
 const express = require("express")
+const axios = require('axios')
 const path = require("path")
 const app = express()
 const port = 7000
@@ -45,26 +46,40 @@ app.get('/products', (req, res) => {
 
 app.post('/create_order', (req, res) => {
     const orderData = req.body;
-
-    const orderId = orderData.orderId;
-    const params = {
+    const paymentInfo = {
+      companyName: orderData.companyName,
+      companyNumber: orderData.companyNumber,
+      customerName: orderData.customerName,
+      customerCardNum: orderData.customerCardNum,
+      customerExpDate: orderData.customerExpDate,
+      customerCVV: orderData.customerCVV,
+      totalCost: orderData.totalCost
+    }
+    axios.post("http://localhost:8000/can_pay", paymentInfo)
+    .then((response) => {
+      const orderId = orderData.orderId;
+      const bankConfirmNum = response.data;
+      const params = {
       TableName: 'Orders',
-      Item: {
+        Item: {
         orderId: orderId,
+        bankConfirmNum: bankConfirmNum,
         name: orderData.name,
         quantity: orderData.buyQuantity,
-      },
-    };
+        },
+      };
+      console.log("Bank responded with confirmation number: " + bankConfirmNum)
 
-    docClient.put(params, (err) => {
-      if (err) {
-        console.error('Error', err);
-        res.status(500).json({ error: 'Failed to create an order in DynamoDB' });
-      } else {
-        console.log('Order created successfully');
-        res.json({ message: 'Order created successfully' });
-      }
-    });
+      docClient.put(params, (err) => {
+        if (err) {
+          console.error('Error', err);
+          res.status(500).json({ error: 'Failed to create an order in DynamoDB' });
+        } else {
+          console.log('Order created successfully');
+          res.json({ message: 'Order created successfully' });
+        }
+      });
+    })
   });
 
 const productMap = new Map();

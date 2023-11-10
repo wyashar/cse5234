@@ -40,10 +40,10 @@ const PaymentEntry = () => {
             placeholder="999-999-9999"
             required
             type="text"
-            value={paymentInfo.name}
+            value={paymentInfo.cardNumber}
             onChange={(e) => {
               const updatedPaymentInfo = { ... paymentInfo }
-              updatedPaymentInfo.name = e.target.value
+              updatedPaymentInfo.cardNumber = e.target.value
               setPaymentInfo(updatedPaymentInfo)
           }}
           />

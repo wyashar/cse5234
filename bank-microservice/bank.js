@@ -13,7 +13,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.listen(port, () => {
-    console.log('RUNNING ON http://locatlhost:8000')
+    console.log('RUNNING ON http://localhost:8000')
 })
 
 app.post('/can_pay', (req, res) => {
@@ -24,10 +24,12 @@ app.post('/can_pay', (req, res) => {
     const customerCardNum = info.customerCardNum
     const customerExpDate = info.customerExpDate
     const customerCVV = info.customerCVV
+    const totalCost = info.totalCost
     
     const confirmationString = "Payment succeeded. Bussiness with name " 
-     + companyName +" with numnber " + companyNumber + " and customer named :" + customerName
-     + "with credit card info " + customerCardNum + ", " + customerExpDate + ", " + customerCVV
-
-     res.status(200).send(confirmationString)
+     + companyName + " and company number " + companyNumber + ". Customer with name " + customerName
+     + " and credit card info: " + customerCardNum + ", " + customerExpDate + ", " + customerCVV
+     + ". Total cost of order: $" + totalCost + "."
+    console.log(confirmationString)
+    res.status(200).send((Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)).toString())
 })
