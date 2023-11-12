@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react"
 import {useNavigate} from "react-router-dom"
 import {useLocation} from "react-router-dom"
 import { useCookies } from 'react-cookie';
-import App from "./App";
-import { response } from "express";
+
 
 const ViewOrder = () => {
   const [cookies, setCookie] = useCookies(['productName', 'buyQuantity', 'productDescription', 'productPrice']);
@@ -97,17 +96,16 @@ const ViewOrder = () => {
 
     const sendMessage = () => {
       axios
-        .post("http://localhost:5000/send_shipping", null)
-        .then((response) => {
-          const res_data = response.data;
-          console.log("Order created successfully:", res_data);
-        });
+        .post("http://localhost:5000/send_shipping")
+        .then(() => {
+          console.log("Shipping message success");
+        })
     }
 
     const navigate = useNavigate()
     const handleSubmit = () => {
-      updateDatabaseQuantities()
       sendMessage()
+      updateDatabaseQuantities()
     }
 
     useEffect(() => {

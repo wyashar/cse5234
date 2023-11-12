@@ -35,10 +35,10 @@ const sendShippingMessage = (topic, value, key) => {
     producer.on("ready", () => {
         console.log("hello")
         producer.produce(topic, -1, Buffer.from(value), Buffer.from(key));
+        console.log("test")
     });
 }
 
-app.post('/send_shipping', (req, res) => {
+app.post('/send_shipping', () => {
     sendShippingMessage("ShippingCo", "CSE5234LLC wants to initiate shipping", "key");
-    res.status(200).json({ message: 'Shipping message sent successfully.' });
 })
