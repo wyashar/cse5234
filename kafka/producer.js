@@ -15,7 +15,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.listen(port, () => {
-    console.log('RUNNING ON http://localhost:5000')
+    console.log('RUNNING ON http://localhost:3000')
 })
 
 const readConfigFile = (fileName) => {
@@ -33,9 +33,7 @@ const sendShippingMessage = (topic, value, key) => {
     const producer = new Kafka.Producer(readConfigFile("client.properties"));
     producer.connect();
     producer.on("ready", () => {
-        console.log("hello")
         producer.produce(topic, -1, Buffer.from(value), Buffer.from(key));
-        console.log("test")
     });
 }
 

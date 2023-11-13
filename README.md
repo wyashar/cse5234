@@ -39,6 +39,8 @@ To use this application, you need to provide AWS credentials. These credentials 
 
     ```
     ~/cse5234/server$ node server.js
+    ~/cse5234/bank-microservice$ node bank.js
+    ~/cse5234/kafka$ node producer.js
     ```
 
 
