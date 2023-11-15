@@ -7,7 +7,7 @@ const port = 5000
 const cors = require('cors')
 
 const corsOptions = {
-    origin: "http://localhost:5000",
+    origin: "http://localhost:3000",
     credentials: true,
     optionSuccessStatus: 200
 }
@@ -15,7 +15,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.listen(port, () => {
-    console.log('RUNNING ON http://localhost:3000')
+    console.log('RUNNING ON http://localhost:5000')
 })
 
 const readConfigFile = (fileName) => {
